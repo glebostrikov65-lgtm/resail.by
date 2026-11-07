@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Балорусский ресейл</title>
+<title>Беларускі ресейл</title>
 <style>
   :root {
     --bg: #f2f3f7;
@@ -197,20 +197,25 @@
   .changelog-list li { margin-bottom: 8px; }
   
   .tab-content { display: none; }
-  .tab-content.active { display: block; }
-  .tab-btn { flex: 1; padding: 10px; border: none; background: var(--bg); font-weight: 800; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: 0.2s; font-size: 13px;}
-  .tab-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-  .tab-header { display: flex; gap: 4px; margin-bottom: 16px; background: var(--bg); padding: 4px; border-radius: 10px; }
+  .tab-content.active { display: block; animation: fadeIn 0.2s ease;}
+  
+  .changelog-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; margin-bottom: 10px; }
+  .changelog-nav button { background: var(--bg); border: 1px solid var(--border); padding: 10px 15px; border-radius: 8px; font-weight: 900; cursor: pointer; color: var(--text); transition: 0.2s; }
+  .changelog-nav button:active { transform: scale(0.95); }
+  .changelog-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .version-title { font-size: 22px; font-weight: 900; text-align: center; }
 
   .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:14px 28px;border-radius:12px;font-size:14px;font-weight:800;z-index:1000;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);opacity:0;pointer-events:none; box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+  .timer-badge { font-size: 11px; background: var(--warning); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; margin-left: 8px; vertical-align: middle; }
 </style>
 </head>
 <body class="theme-light">
 
 <div id="app-container">
   <div id="screen-splash">
-    <div class="splash-title">Балорусский<br>ресейл</div>
+    <div class="splash-title">Беларускі<br>ресейл</div>
     <div class="splash-subtitle">ВЕРСИЯ 1.2</div>
     <div class="splash-made-by">MADE BY FAMEXXF</div>
   </div>
@@ -244,7 +249,12 @@
       </div>
       <button class="btn btn-primary" style="margin-top: 5px; padding: 10px;" onclick="openLeaderboard()">🏆 Топ-10 игроков</button>
     </div>
-    <div class="shop-header" id="shop-count" style="padding: 10px 16px; font-size: 13px; font-weight: 700; color: var(--text-muted);">В наличии: 0 шт.</div>
+    
+    <div class="shop-header" style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;">
+      <span id="shop-count" style="font-size: 13px; font-weight: 700; color: var(--text-muted);">В наличии: 0 шт.</span>
+      <span class="timer-badge">Обновление: <span id="shop-timer">90</span>с</span>
+    </div>
+
     <div class="grid" id="shop-grid"></div>
   </div>
 
@@ -364,31 +374,30 @@
 
   <div class="modal-overlay" id="changelog-modal">
     <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
-      <div class="tab-header">
-        <button class="tab-btn active" onclick="switchChangelogTab('v12')">Версия 1.2</button>
-        <button class="tab-btn" onclick="switchChangelogTab('v11')">Версия 1.1</button>
-        <button class="tab-btn" onclick="switchChangelogTab('v10')">Версия 1.0</button>
-      </div>
       
+      <!-- ВЕРСИЯ 1.2 -->
       <div class="tab-content active" id="changelog-v12">
-        <h3 style="margin-bottom:12px;font-size:22px; font-weight: 900;">Что нового в 1.2</h3>
+        <div class="version-title">Версия 1.2</div>
         <ul class="changelog-list">
-          <li><b>Кнопка «Топ-10» в магазине:</b> Таблица лидеров теперь доступна прямо с главного экрана.</li>
-          <li><b>Журнал обновлений:</b> Добавлены вкладки для просмотра истории версий (1.0, 1.1, 1.2).</li>
-          <li><b>Исправлено название:</b> Теперь игра называется «Балорусский ресейл» (через «а»).</li>
+          <li><b>Смена названия:</b> Игра переименована в «Беларускі ресейл».</li>
+          <li><b>Фикс онлайна:</b> Таблица лидеров теперь корректно сохраняет результаты.</li>
+          <li><b>Таймер магазина:</b> Добавлен таймер обновления ассортимента.</li>
+          <li><b>Кнопка Топ-10:</b> Вынесена на главный экран.</li>
         </ul>
       </div>
 
+      <!-- ВЕРСИЯ 1.1 -->
       <div class="tab-content" id="changelog-v11">
-        <h3 style="margin-bottom:12px;font-size:22px; font-weight: 900;">Что нового в 1.1</h3>
+        <div class="version-title">Версия 1.1</div>
         <ul class="changelog-list">
           <li><b>Серверная таблица лидеров:</b> Топ-10 игроков по деньгам сохраняется в базе данных.</li>
-          <li><b>Исправлен ремонт складных телефонов:</b> Можно менять обе батареи (АКБ 1 и АКБ 2).</li>
+          <li><b>Исправлен ремонт складных телефонов:</b> Теперь можно менять обе батареи (АКБ 1 и АКБ 2).</li>
         </ul>
       </div>
 
+      <!-- ВЕРСИЯ 1.0 -->
       <div class="tab-content" id="changelog-v10">
-        <h3 style="margin-bottom:12px;font-size:22px; font-weight: 900;">Что нового в 1.0</h3>
+        <div class="version-title">Версия 1.0</div>
         <ul class="changelog-list">
           <li><b>300 уникальных телефонов</b> с индивидуальным дизайном камер.</li>
           <li><b>Смена темы</b>: светлая, темная, зеленая.</li>
@@ -396,6 +405,12 @@
           <li><b>Торг</b>: возможность сбить цену у продавца (макс. 20%).</li>
           <li>Добавлено пошаговое <b>обучение</b> для новичков.</li>
         </ul>
+      </div>
+
+      <div class="changelog-nav">
+        <button id="btn-prev" onclick="prevChangelog()" disabled>←</button>
+        <span id="version-indicator" style="font-weight: 900;">Версия 1.2</span>
+        <button id="btn-next" onclick="nextChangelog()">→</button>
       </div>
 
       <button class="btn btn-black" style="margin-top:10px;" onclick="closeModal('changelog-modal')">Закрыть</button>
@@ -610,6 +625,10 @@ var isPhoneFlipped=false;
 var isInstalling=false;
 var currentBrandFilter = 'all';
 
+var shopTimerInterval = null;
+var timeLeft = 90;
+var changelogIndex = 0; // 0: v1.2, 1: v1.1, 2: v1.0
+
 function $(id){return document.getElementById(id);}
 function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function pick(a){return a[rnd(0,a.length-1)];}
@@ -650,6 +669,24 @@ function setBrandFilter(brand) {
     } else { btn.classList.remove('active'); }
   });
   renderShop();
+}
+
+// --- ТАЙМЕР МАГАЗИНА ---
+function startShopTimer() {
+  if(shopTimerInterval) clearInterval(shopTimerInterval);
+  timeLeft = 90;
+  $('shop-timer').textContent = timeLeft;
+  
+  shopTimerInterval = setInterval(() => {
+    timeLeft--;
+    if(timeLeft <= 0) {
+      timeLeft = 90;
+      genShop();
+      renderShop();
+      toast('🔄 Магазин обновился!');
+    }
+    $('shop-timer').textContent = timeLeft;
+  }, 1000);
 }
 
 // --- ГЕНЕРАТОР SVG (ИСПРАВЛЕНЫ КАМЕРЫ И ВСПЫШКИ) ---
@@ -1365,14 +1402,37 @@ async function submitScore() {
 // --- ОБУЧЕНИЕ И ЖУРНАЛ ---
 function openChangelog(){
   closeModal('settings-modal');
+  changelogIndex = 0;
+  updateChangelogView();
   $('changelog-modal').classList.add('active');
 }
-function switchChangelogTab(tab){
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+function updateChangelogView() {
+  const versions = ['v12', 'v11', 'v10'];
+  const names = ['Версия 1.2', 'Версия 1.1', 'Версия 1.0'];
+  
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('changelog-' + tab).classList.add('active');
+  document.getElementById('changelog-' + versions[changelogIndex]).classList.add('active');
+  document.getElementById('version-indicator').textContent = names[changelogIndex];
+  
+  document.getElementById('btn-prev').disabled = (changelogIndex === 0);
+  document.getElementById('btn-next').disabled = (changelogIndex === versions.length - 1);
 }
+
+function prevChangelog() {
+  if(changelogIndex > 0) {
+    changelogIndex--;
+    updateChangelogView();
+  }
+}
+
+function nextChangelog() {
+  if(changelogIndex < 2) {
+    changelogIndex++;
+    updateChangelogView();
+  }
+}
+
 function nextTutorial(step){
   document.querySelectorAll('.tutorial-step').forEach(s => s.classList.remove('active'));
   document.getElementById('tut-' + step).classList.add('active');
@@ -1399,6 +1459,7 @@ function restartTutorial(){
 loadGame();
 if(!state.shop||state.shop.length===0)genShop();
 renderShop();
+startShopTimer();
 
 window.addEventListener('load',function(){
   setTimeout(function(){
@@ -1413,14 +1474,8 @@ window.addEventListener('load',function(){
         setTimeout(function(){ openChangelog(); state.firstLaunch = false; saveGame(); }, 500);
       }
     }
-  },2000);
+  },3000);
 });
-
-setInterval(function(){
-  if($('screen-shop').classList.contains('active')&&!$('screen-ad').classList.contains('active')){
-    genShop();renderShop();toast('Магазин обновился!');
-  }
-},90000);
 </script>
 </body>
 </html>
